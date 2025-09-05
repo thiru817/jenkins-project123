@@ -10,14 +10,14 @@ pipeline {
         stage('Checkout Code') {
             steps {
                 // Replace with your repo URL that has Dockerfile + index.html
-                git branch: 'main', url: 'https://github.com/your-username/your-repo.git'
+                git branch: 'main', url: 'https://github.com/thiru817/jenkins-project123.git'
             }
         }
 
         stage('Build Docker Image') {
             steps {
                 script {
-                    sh "docker build -t ${IMAGE_NAME} ."
+                    sh "docker build -t ${my-html-app} ."
                 }
             }
         }
@@ -27,13 +27,13 @@ pipeline {
                 script {
                     // Stop and remove old container if it exists
                     sh """
-                        if [ \$(docker ps -aq -f name=${CONTAINER_NAME}) ]; then
-                          docker stop ${CONTAINER_NAME} || true
-                          docker rm ${CONTAINER_NAME} || true
+                        if [ \$(docker ps -aq -f name=${my-html-container}) ]; then
+                          docker stop ${my-html-container} || true
+                          docker rm ${my-html-container} || true
                         fi
                     """
                     // Run new container
-                    sh "docker run -d --name ${CONTAINER_NAME} -p 8080:80 ${IMAGE_NAME}"
+                    sh "docker run -d --name ${my-html-container} -p 8080:80 ${my-html-app}"
                 }
             }
         }
@@ -41,7 +41,7 @@ pipeline {
 
     post {
         success {
-            echo "App is running at http://<server-ip>:8080"
+            echo "App is running at http://<16.16.24.26>:8080"
         }
     }
 }
